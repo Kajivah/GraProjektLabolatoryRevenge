@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour {
     public bool useSprint = true;
     public KeyCode sprintKey = KeyCode.LeftShift;
 
+    public KeyCode crouch = KeyCode.LeftControl;
+
     CharacterController controller;
     Transform groundCheck;
     Vector3 velocity;
@@ -27,6 +29,7 @@ public class PlayerMovement : MonoBehaviour {
     bool isGrounded, isRunning;
 
     void Start() {
+        
         Physics.gravity = Vector3.down * 20;
         controller = GetComponent<CharacterController>();
         groundCheck = transform.Find("GroundCheck");
@@ -45,6 +48,16 @@ public class PlayerMovement : MonoBehaviour {
         controller.Move(motion * speed * speedMultiplier * Time.deltaTime);
         if(Input.GetButtonDown("Jump") && isGrounded) {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+        if(Input.GetKey(KeyCode.LeftControl))
+        {
+            controller.height = 1f;
+
+        }
+        else
+        {
+            controller.height = 2f;
+
         }
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
